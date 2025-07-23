@@ -1,0 +1,34 @@
+{% extends "news/base.html" %}
+{% block title %}
+    {{ publisher.name }}
+{% endblock title %}
+{% block content %}
+    This is the details page for {{ publisher.name }}<br>
+    {% if publisher in user.userprofile.working_for_publisher.all and Journalist == True %}
+    <a href="{% url 'news:add_article' pk=publisher.pk %}">Add Article</a>
+    {% endif %}
+    <h2>Articles published by {{ publisher.name }}:</h2>
+        {% for article in publisher_articles %}
+            {% if editor == True and publisher in user.userprofile.working_for_publisher.all or article.approved == True or article.journalist == user %}
+                <a href="{% url 'news:article_details' pk=article.pk %}"><h3>{{ article.title }}</h3></a>
+                by <a href="{% url 'news:view_profile' pk=article.journalist.pk %}">{{ article.journalist }}</a><br>
+                {% if article.journalist == user %}
+                    <a href="{% url 'news:edit_article' pk=article.pk %}">edit</a>
+                    <a href="{% url 'news:delete_article' pk=article.pk %}">Delete</a>
+                {% endif %}
+                {% if editor == True and publisher in user.userprofile.working_for_publisher.all %}
+                    <a href="{% url 'news:edit_article' pk=article.pk %}">edit</a>
+                    <a href="{% url 'news:delete_article' pk=article.pk %}">Delete</a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    <form method=POST>
+        {% csrf_token %}
+        {% if publisher in user.userprofile.follows_publisher.all %}
+            <button class="btn" name ="follow" value = "unfollow" type='sumbit'>Unfollow {{publisher.name}}</button>
+        {% else %}
+            <button class="btn" name ="follow" value = "follow" type='sumbit'>follow {{publisher.name}}</button>
+       
+        {% endif %}
+    </form>
+{% endblock content %}

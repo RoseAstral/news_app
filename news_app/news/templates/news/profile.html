@@ -1,0 +1,17 @@
+{% extends "news/base.html" %}
+{% block title %}
+    {{ profile }} profile
+{% endblock %}
+{% block content %}
+    This is the profile of {{ profile }}<br>
+    <form method=POST>
+        {% csrf_token %}
+        {% if profile in user.userprofile.follows_user.all %}
+            <button class="btn" name ="follow" value = "unfollow" type='sumbit'>Unfollow {{profile}}</button>
+        {% else %}
+            <button class="btn" name ="follow" value = "follow" type='sumbit'>follow {{profile}}</button>
+       
+        {% endif %}
+    </form>
+
+{% endblock content %}

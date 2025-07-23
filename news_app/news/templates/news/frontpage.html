@@ -1,0 +1,10 @@
+{% extends "news/base.html" %}
+{% block title %}
+    FrontPage
+{% endblock %}
+{% block content %}
+    This is the frontpage<br>
+    {% for publisher in publisher_list %}
+        <a href="{% url 'news:publisher_details' pk=publisher.pk %}">{{ publisher.name }}</a>
+    {% endfor %}
+{% endblock content %}

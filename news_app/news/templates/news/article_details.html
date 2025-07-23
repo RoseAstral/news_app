@@ -1,0 +1,21 @@
+{% extends "news/base.html" %}
+{% block title %}
+    {{ article.title  }}
+{% endblock title %}
+{% block content %}
+    <h1>{{ article.title }}</h1>
+    <h2>Content:</h2>
+    {{ article.content }}
+    
+    <form method=POST>
+        {% csrf_token %}
+        {% if article.publisher in user.userprofile.working_for_publisher.all and editor == True %}
+            {%if article.approved == False %}
+                <button class="btn" name ="approve" value = "approve" type='sumbit'>Approve</button>
+            {% else %}
+                <button class="btn" name ="approve" value = "unapprove" type='sumbit'>Unapprove</button>
+            {% endif %}
+       
+        {% endif %}
+    </form>
+{% endblock content %}
